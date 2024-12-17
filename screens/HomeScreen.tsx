@@ -11,6 +11,7 @@ import {
   FlatList,
   Animated,
   TouchableOpacity,
+  Modal,
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -22,6 +23,7 @@ type AuthStackParamList = {
   Register: undefined
   Home: undefined
   Cartelera: undefined
+  Compras: undefined
 }
 
 type HomeScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Home'>
@@ -81,6 +83,14 @@ export default function HomeScreen() {
     return () => clearInterval(interval)
   }, [carouselData.length])
 
+  const [modalVisible, setModalVisible] = useState(false)
+  const [selectedImage, setSelectedImage] = useState<any>(null)
+
+  const handleImagePress = (image: any) => {
+    setSelectedImage(image)
+    setModalVisible(true)
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Título */}
@@ -121,7 +131,9 @@ export default function HomeScreen() {
         showsHorizontalScrollIndicator={false}
         keyExtractor={(_, index) => `carousel-${index}`}
         renderItem={({ item }) => (
-          <Image source={item} style={styles.carouselImage} />
+          <TouchableOpacity onPress={() => handleImagePress(item)}>
+            <Image source={item} style={styles.carouselImage} />
+          </TouchableOpacity>
         )}
         contentContainerStyle={styles.carouselContainer}
         snapToInterval={400}
@@ -136,6 +148,39 @@ export default function HomeScreen() {
           <Image key={index} source={promo} style={styles.promoImage} />
         ))}
       </View>
+
+      {/* Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Image source={selectedImage} style={styles.modalImage} />
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={styles.buyButton}
+                onPress={() => {
+                  // Aquí puedes agregar la lógica para comprar entradas
+                  setModalVisible(false)
+                  navigation.navigate('Compras') 
+                }}
+              >
+                <Text style={styles.buttonText}>Comprar entradas</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.buttonText}>Cerrar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
     </ScrollView>
   )
 }
@@ -227,5 +272,50 @@ const styles = StyleSheet.create({
     height: 150,
     marginBottom: 10,
     borderRadius: 12,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: 300,
+    backgroundColor: '#FFF',
+    borderRadius: 12,
+    padding: 20,
+    alignItems: 'center',
+  },
+  modalImage: {
+    width: 250,
+    height: 250,
+    marginBottom: 20,
+    borderRadius: 12,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  buyButton: {
+    backgroundColor: '#5A5A5A',
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeButton: {
+    backgroundColor: '#FF5733',
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 })

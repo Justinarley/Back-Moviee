@@ -5,6 +5,8 @@ import ProfileScreen from '../screens/ProfileScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import CarteleraScreen from '../screens/CarteleraScreen';
 import { createStackNavigator } from '@react-navigation/stack';
+import RegistroReserva from '../screens/Compra';
+import ReservaCitaForm from '../screens/Compra';
 
 type AuthStackParamList = {
   Login: undefined;
@@ -12,6 +14,7 @@ type AuthStackParamList = {
   Home: undefined;
   Cartelera: undefined;
   Profile: undefined;
+  Compras: undefined;
 };
 
 const AuthStack = createStackNavigator<AuthStackParamList>();
@@ -31,6 +34,7 @@ const AuthNavigator: React.FC<AuthNavigatorProps> = ({ isAuthenticated, setIsAut
       <AuthStack.Screen name="Home" component={HomeScreen} />
       <AuthStack.Screen name="Cartelera" component={CarteleraScreen} />
       <AuthStack.Screen name="Profile" component={ProfileScreen} />
+      <AuthStack.Screen name="Compras" component={ReservaCitaForm} />
     </AuthStack.Navigator>
   );
 };
