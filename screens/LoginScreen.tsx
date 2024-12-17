@@ -24,7 +24,7 @@ export default function LoginScreen({ setIsAuthenticated }: LoginScreenProps) {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/api-users/login', {
+      const response = await axios.post('https://movitime.byronrm.com/api-users/login', {
         correo,
         password,
       });

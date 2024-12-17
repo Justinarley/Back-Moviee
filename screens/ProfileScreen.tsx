@@ -28,7 +28,7 @@ export default function ProfileScreen() {
     const fetchUserData = async () => {
       try {
         const token = await AsyncStorage.getItem('authToken');
-        const response = await axios.get('http://localhost:8080/api-users/profile', {
+        const response = await axios.get('https://movitime.byronrm.com/api-users/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUserData(response.data);
@@ -44,7 +44,7 @@ export default function ProfileScreen() {
     try {
       const token = await AsyncStorage.getItem('authToken');
       if (token) {
-        await axios.put('http://localhost:8080/api-users/profile', userData, {
+        await axios.put('https://movitime.byronrm.com/api-users/profile', userData, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setIsEditing(false); 

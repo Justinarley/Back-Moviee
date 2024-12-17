@@ -60,7 +60,7 @@ export default function HomeScreen() {
       try {
         const token = await AsyncStorage.getItem('authToken')
         if (token) {
-          const response = await axios.get('http://localhost:8080/api-users/profile', {
+          const response = await axios.get('https://movitime.byronrm.com/api-users/profile', {
             headers: { Authorization: `Bearer ${token}` },
           })
           setUserName(response.data.nombre)

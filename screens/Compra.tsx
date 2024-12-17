@@ -38,7 +38,7 @@ export default function ReservaCitaForm() {
     }
 
     try {
-      await axios.post('http://localhost:8080/api-citas/register', data)
+      await axios.post('https://movitime.byronrm.com/api-citas/register', data)
       setIsModalVisible(true)
     } catch (error) {
       console.error('Error al registrar la cita', error)

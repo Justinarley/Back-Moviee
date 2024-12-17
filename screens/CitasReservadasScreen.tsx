@@ -34,7 +34,7 @@ export default function CitasReservadasScreen() {
     useEffect(() => {
         const fetchCitas = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api-citas/all');
+                const response = await axios.get('https://movitime.byronrm.com/api-citas/all');
                 setCitas(response.data);
             } catch (error) {
                 console.error('Error fetching citas', error);

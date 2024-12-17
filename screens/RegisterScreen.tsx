@@ -44,7 +44,7 @@ export default function RegisterScreen() {
         }
 
         try {
-            const apiUrl = 'http://localhost:8080/api-users/register';
+            const apiUrl = 'https://movitime.byronrm.com/api-users/register';
             const response = await axios.post(apiUrl, form);
             Alert.alert('Registro exitoso', response.data);
             navigation.navigate('Login');
