@@ -9,6 +9,7 @@ type AuthStackParamList = {
   Home: undefined;
   Cartelera: undefined;
   Menu: undefined;
+  Reservas: undefined;
 };
 
 type MenuScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Menu'>;
@@ -34,6 +35,15 @@ export default function Menu (){
       >
         <Icon name="film" size={20} color="#FFF" style={styles.icon} />
         <Text style={styles.menuItemText}>Cartelera</Text>
+      </TouchableOpacity>
+
+      {/* Opción "Reservas" */}
+      <TouchableOpacity
+        style={styles.menuItem}
+        onPress={() => navigation.navigate('Reservas')}
+      >
+        <Icon name="ticket" size={20} color="#FFF" style={styles.icon} />
+        <Text style={styles.menuItemText}>Compras</Text>
       </TouchableOpacity>
 
       {/* Opción "Perfil" */}

@@ -103,7 +103,7 @@ export default function ProfileScreen() {
         <TextInput
           value={userData.fechaNacimiento}
           editable={isEditing}
-          placeholder="Fecha de Nacimiento"
+          placeholder="Fecha de Nacimiento YYYY-MM-DD"
           onChangeText={(value) => setUserData({ ...userData, fechaNacimiento: value })}
           style={[styles.input, !isEditing && styles.inputDisabled]}
         />

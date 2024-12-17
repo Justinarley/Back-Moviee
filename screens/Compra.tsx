@@ -1,164 +1,229 @@
-import React, { useState } from 'react';
-import { Button, InputNumber, Form, message, Input, Modal } from 'antd';
+import React, { useState } from 'react'
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Modal,
+  StyleSheet,
+} from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import axios from 'axios'
 
-const ReservaCitaForm = () => {
-  const [entradas, setEntradas] = useState(1); // Número de entradas, comenzando en 1
-  const [nombrePelicula, setNombrePelicula] = useState(""); // Para el nombre de la película
-  const [fechaFuncion, setFechaFuncion] = useState(""); // Para la fecha de la función
-  const [horaFuncion, setHoraFuncion] = useState(""); // Para la hora de la función
+// Tipos del stack de navegación
+type AuthStackParamList = {
+  Home: undefined
+  Cartelera: undefined
+  Compras: undefined
+}
 
-  const [isModalVisible, setIsModalVisible] = useState(false); // Para controlar la visibilidad del modal
+type NavigationProp = StackNavigationProp<AuthStackParamList, 'Compras'>
 
-  // Manejar el cambio de entradas
-  const handleEntradasChange = (value: number | null) => {
-    if (value !== null) {
-      setEntradas(value);
-    }
-  };
+export default function ReservaCitaForm() {
+  const navigation = useNavigation<NavigationProp>()
 
-  // Mostrar el modal con los datos de la cita
-  const handleSubmit = (values: any) => {
-    setNombrePelicula(values.nombrePelicula);
-    setFechaFuncion(values.fechaFuncion);
-    setHoraFuncion(values.horaFuncion);
-    
-    setIsModalVisible(true); // Abrir el modal
+  const [nombrePelicula, setNombrePelicula] = useState('')
+  const [fechaFuncion, setFechaFuncion] = useState('')
+  const [horaFuncion, setHoraFuncion] = useState('')
+  const [entradas, setEntradas] = useState('1')
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
-    // Aquí puedes hacer la lógica para enviar los datos al backend
+  const handleSubmit = async () => {
     const data = {
-      nombrePelicula: values.nombrePelicula,
-      fechaFuncion: values.fechaFuncion,
-      horaFuncion: values.horaFuncion,
-      entradas: entradas,
-    };
+      nombrePelicula,
+      fechaFuncion,
+      horaFuncion,
+      entradas: Number(entradas),
+    }
 
-    fetch('http://localhost:8080/api-citas/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then(response => response.json())
-      .then(data => {
-        message.success('Cita registrada exitosamente!');
-      })
-      .catch((error) => {
-        message.error('Error al registrar la cita');
-      });
-  };
+    try {
+      await axios.post('http://localhost:8080/api-citas/register', data)
+      setIsModalVisible(true)
+    } catch (error) {
+      console.error('Error al registrar la cita', error)
+    }
+  }
 
-  // Cerrar el modal
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  const handleConfirm = () => {
+    setIsModalVisible(false)
+    navigation.navigate('Home') // Redirige al Home
+  }
 
   return (
-    <div style={styles.container}>
-      <Form onFinish={handleSubmit} layout="vertical" style={styles.form}>
-        <Form.Item
-          label="Nombre de la Película"
-          name="nombrePelicula"
-          rules={[{ required: true, message: 'Por favor ingresa el nombre de la película' }]} >
-          <Input style={styles.input} />
-        </Form.Item>
+    <View style={styles.container}>
+      <Text style={styles.title}>Reservar Cita</Text>
 
-        <Form.Item
-          label="Fecha de la Función"
-          name="fechaFuncion"
-          rules={[{ required: true, message: 'Por favor ingresa la fecha de la función' }]} >
-          <Input type="date" style={styles.input} />
-        </Form.Item>
+      {/* Input: Nombre de la Película */}
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Nombre de la Película</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Ingrese el nombre"
+          placeholderTextColor="#AAA"
+          value={nombrePelicula}
+          onChangeText={setNombrePelicula}
+        />
+      </View>
 
-        <Form.Item
-          label="Hora de la Función"
-          name="horaFuncion"
-          rules={[{ required: true, message: 'Por favor ingresa la hora de la función' }]} >
-          <Input type="time" style={styles.input} />
-        </Form.Item>
+      {/* Input: Fecha de la Función */}
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Fecha de la Función</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="YYYY-MM-DD"
+          placeholderTextColor="#AAA"
+          value={fechaFuncion}
+          onChangeText={setFechaFuncion}
+        />
+      </View>
 
-        <Form.Item
-          label="Número de Entradas"
-          name="entradas">
-          <InputNumber 
-            min={1} 
-            value={entradas} 
-            onChange={handleEntradasChange} 
-            style={styles.inputNumber}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" style={styles.button}>
-            Comprar Entradas
-          </Button>
-        </Form.Item>
-      </Form>
+      {/* Input: Hora de la Función */}
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Hora de la Función</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="HH:MM"
+          placeholderTextColor="#AAA"
+          value={horaFuncion}
+          onChangeText={setHoraFuncion}
+        />
+      </View>
 
-      {/* Modal para mostrar los datos de la cita */}
+      {/* Input: Número de Entradas */}
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Número de Entradas</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="1"
+          placeholderTextColor="#AAA"
+          keyboardType="numeric"
+          value={entradas}
+          onChangeText={setEntradas}
+        />
+      </View>
+
+      {/* Botón de Confirmar */}
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <Text style={styles.buttonText}>Confirmar Reserva</Text>
+      </TouchableOpacity>
+
+      {/* Modal de Confirmación */}
       <Modal
-        title="Confirmar Reserva"
-        open={isModalVisible}
-        onCancel={handleCancel}
-        footer={[ 
-          <Button key="back" onClick={handleCancel} style={styles.modalButton}>
-            Cerrar
-          </Button>,
-        ]}
+        animationType="slide"
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={() => setIsModalVisible(false)}
       >
-        <p><strong>Nombre de la película:</strong> {nombrePelicula}</p>
-        <p><strong>Fecha de la función:</strong> {fechaFuncion}</p>
-        <p><strong>Hora de la función:</strong> {horaFuncion}</p>
-        <p><strong>Entradas:</strong> {entradas}</p>
-      </Modal>
-    </div>
-  );
-};
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Confirmar Reserva</Text>
+            <Text style={styles.modalText}>Película: {nombrePelicula}</Text>
+            <Text style={styles.modalText}>Fecha: {fechaFuncion}</Text>
+            <Text style={styles.modalText}>Hora: {horaFuncion}</Text>
+            <Text style={styles.modalText}>Entradas: {entradas}</Text>
 
-// Estilos mejorados
-const styles = {
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={[styles.button, styles.secondaryButton]}
+                onPress={() => setIsModalVisible(false)}
+              >
+                <Text style={styles.buttonText}>Regresar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={handleConfirm}>
+                <Text style={styles.buttonText}>Confirmar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
   container: {
-    padding: '20px',
+    flex: 1,
     backgroundColor: '#121212',
-    borderRadius: '8px',
-    maxWidth: '500px',
-    margin: 'auto',
-    color: '#fff', // Color blanco para todo el contenedor
+    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center', // Centra todo el contenido en la pantalla
   },
-  form: {
-    backgroundColor: '#1f1f1f',
-    padding: '20px',
-    borderRadius: '8px',
-    color: '#fff', // Color blanco para todo el formulario
+  title: {
+    color: '#FFF',
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  inputGroup: {
+    marginBottom: 15,
+    width: '90%', // Ancho total del grupo
+  },
+  label: {
+    color: '#FFF',
+    marginBottom: 5,
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'left', // Alinea el subtítulo a la izquierda
+    marginLeft: '25%', // Da margen izquierdo para que quede alineado al input
   },
   input: {
     backgroundColor: '#333',
-    borderRadius: '8px',
-    color: '#fff', // Color blanco para el texto del input
-    padding: '10px',
-  },
-  inputNumber: {
-    backgroundColor: '#333',
-    borderRadius: '8px',
-    color: '#fff', // Color blanco para el texto del InputNumber
-    padding: '10px',
-    width: '100%',
+    borderRadius: 8,
+    padding: 10,
+    color: '#FFF',
+    width: '50%', // Inputs más cortos
+    alignSelf: 'center', // Centra los inputs dentro del grupo
   },
   button: {
     backgroundColor: '#5A5A5A',
-    color: '#fff', // Color blanco para el texto del botón
-    fontSize: '16px',
-    borderRadius: '8px',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 20,
+    width: '30%',
+    alignSelf: 'center', // Centra el botón
+  },
+  buttonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#FFF',
+    borderRadius: 12,
+    padding: 20,
+    width: '80%',
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 5,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20,
     width: '100%',
   },
-  modalButton: {
-    backgroundColor: '#5A5A5A',
-    color: '#fff', // Color blanco para el texto del botón en el modal
-    fontSize: '16px',
-    borderRadius: '8px',
+  secondaryButton: {
+    backgroundColor: '#FF5733',
+    marginHorizontal: 5,
   },
-  label: {
-    color: '#fff', // Color blanco para los labels
-  },
-};
-
-export default ReservaCitaForm;
+})
