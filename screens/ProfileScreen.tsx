@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { StackNavigationProp } from '@react-navigation/stack';
 import Menu from '../components/Menu';
+import React, { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
 type AuthStackParamList = {
   Profile: undefined;
@@ -28,14 +28,13 @@ export default function ProfileScreen() {
     const fetchUserData = async () => {
       try {
         const token = await AsyncStorage.getItem('authToken');
-        console.log('Token:', token);  // Verifica que el token esté disponible
         const response = await axios.get('http://localhost:8080/api-users/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log('Usuario registrado:', response.data);  // Verifica la respuesta
-        setUserData(response.data); // Aquí se setea todo el objeto del usuario
+        setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data', error);
+        Alert.alert('Error', 'Hubo un problema al cargar los datos');
       }
     };
     fetchUserData();
@@ -48,7 +47,7 @@ export default function ProfileScreen() {
         await axios.put('http://localhost:8080/api-users/profile', userData, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setIsEditing(false); // Deshabilitar edición
+        setIsEditing(false); 
         Alert.alert('Éxito', 'Datos actualizados correctamente');
       }
     } catch (error) {
@@ -63,45 +62,52 @@ export default function ProfileScreen() {
   };
 
   return (
-
     <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>MOVITIME</Text>
+      </View>
+      <br />
       <Menu />
+      <br />
+      <br />
       <Text style={styles.title}>Mi Perfil</Text>
-      <TextInput
-        value={userData.nombre}
-        editable={isEditing}
-        placeholder="Nombre"
-        onChangeText={(value) => setUserData({ ...userData, nombre: value })}
-        style={[styles.input, !isEditing && styles.inputDisabled]}
-      />
-      <TextInput
-        value={userData.apellido}
-        editable={isEditing}
-        placeholder="Apellido"
-        onChangeText={(value) => setUserData({ ...userData, apellido: value })}
-        style={[styles.input, !isEditing && styles.inputDisabled]}
-      />
-      <TextInput
-        value={userData.correo}
-        editable={isEditing}
-        placeholder="Correo"
-        onChangeText={(value) => setUserData({ ...userData, correo: value })}
-        style={[styles.input, !isEditing && styles.inputDisabled]}
-      />
-      <TextInput
-        value={userData.celular}
-        editable={isEditing}
-        placeholder="Celular"
-        onChangeText={(value) => setUserData({ ...userData, celular: value })}
-        style={[styles.input, !isEditing && styles.inputDisabled]}
-      />
-      <TextInput
-        value={userData.fechaNacimiento}
-        editable={isEditing}
-        placeholder="Fecha de Nacimiento"
-        onChangeText={(value) => setUserData({ ...userData, fechaNacimiento: value })}
-        style={[styles.input, !isEditing && styles.inputDisabled]}
-      />
+      <View style={styles.form}>
+        <TextInput
+          value={userData.nombre}
+          editable={isEditing}
+          placeholder="Nombre"
+          onChangeText={(value) => setUserData({ ...userData, nombre: value })}
+          style={[styles.input, !isEditing && styles.inputDisabled]}
+        />
+        <TextInput
+          value={userData.apellido}
+          editable={isEditing}
+          placeholder="Apellido"
+          onChangeText={(value) => setUserData({ ...userData, apellido: value })}
+          style={[styles.input, !isEditing && styles.inputDisabled]}
+        />
+        <TextInput
+          value={userData.correo}
+          editable={isEditing}
+          placeholder="Correo"
+          onChangeText={(value) => setUserData({ ...userData, correo: value })}
+          style={[styles.input, !isEditing && styles.inputDisabled]}
+        />
+        <TextInput
+          value={userData.celular}
+          editable={isEditing}
+          placeholder="Celular"
+          onChangeText={(value) => setUserData({ ...userData, celular: value })}
+          style={[styles.input, !isEditing && styles.inputDisabled]}
+        />
+        <TextInput
+          value={userData.fechaNacimiento}
+          editable={isEditing}
+          placeholder="Fecha de Nacimiento"
+          onChangeText={(value) => setUserData({ ...userData, fechaNacimiento: value })}
+          style={[styles.input, !isEditing && styles.inputDisabled]}
+        />
+      </View>
 
       <View style={styles.buttonContainer}>
         {isEditing ? (
@@ -126,7 +132,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#121212',
     padding: 20,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+  },
+  header: {
+    alignItems: 'flex-start',
+    paddingHorizontal: 20,
   },
   title: {
     fontSize: 24,
@@ -134,6 +144,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
+  },
+  form: {
+    width: '100%',
+    maxWidth: 400,
+    alignSelf: 'center',
+    marginTop: 50,
   },
   input: {
     backgroundColor: '#333',
@@ -149,25 +165,29 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 20,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonEdit: {
     backgroundColor: '#E50914',
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
+    marginHorizontal: 10,
   },
   buttonSave: {
     backgroundColor: '#00B894',
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
+    marginHorizontal: 10,
   },
   buttonLogout: {
     backgroundColor: '#D63031',
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
+    marginHorizontal: 10,
   },
   buttonText: {
     color: '#FFF',

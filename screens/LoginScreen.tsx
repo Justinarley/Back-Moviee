@@ -1,11 +1,10 @@
+import axios from 'axios';
 import { useState } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-// Tipos de navegación
 type AuthStackParamList = {
   Login: undefined;
   Register: undefined;
@@ -18,7 +17,7 @@ type LoginScreenProps = {
 
 type LoginScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Login'>;
 
-export default function LoginScreen({ setIsAuthenticated }: LoginScreenProps) { // Recibiendo setIsAuthenticated
+export default function LoginScreen({ setIsAuthenticated }: LoginScreenProps) {
   const navigation = useNavigation<LoginScreenNavigationProp>();
   console.log('LoginScreen renderizado'); 
   const [correo, setCorreo] = useState('');
@@ -35,7 +34,7 @@ export default function LoginScreen({ setIsAuthenticated }: LoginScreenProps) { 
         const { token } = response.data;
         await AsyncStorage.setItem('authToken', token);
         console.log('Token almacenado:', token);
-        setIsAuthenticated(true); // Actualizar el estado de autenticación
+        setIsAuthenticated(true);
         navigation.navigate('Home');
       }
     } catch (error) {
@@ -54,7 +53,7 @@ export default function LoginScreen({ setIsAuthenticated }: LoginScreenProps) { 
       <TextInput
         value={correo}
         onChangeText={setCorreo}
-        placeholder="Correo"
+        placeholder="Correo electrónico"
         placeholderTextColor="#AAA"
         style={styles.input}
       />

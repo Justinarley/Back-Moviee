@@ -10,18 +10,17 @@ import {
   Button as RNButton,
   TouchableOpacity,
 } from 'react-native'
+import Menu from '../components/Menu'
 import { Calendar } from 'react-native-calendars'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import Menu from '../components/Menu'
-
 
 type AuthStackParamList = {
   Login: undefined
   Register: undefined
   Home: undefined
   Cartelera: undefined
-};
+}
 
 type CarteleraScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Cartelera'>
 type HomeScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Home'>
@@ -35,7 +34,7 @@ const carouselData = [
   { image: require('../assets/Intensamente.jpg'), rating: 'Todo Público', status: 'En cartelera' },
 ]
 
-export default function  CarteleraScreen() {
+export default function CarteleraScreen() {
   const navigation = useNavigation<CarteleraScreenNavigationProp>()
   const homeNavigation = useNavigation<HomeScreenNavigationProp>()
   const [isCalendarVisible, setIsCalendarVisible] = useState(false)
@@ -43,7 +42,7 @@ export default function  CarteleraScreen() {
   const [selectedTab, setSelectedTab] = useState<'cartelera' | 'proximamente'>('cartelera')
   const [searchQuery, setSearchQuery] = useState('')
 
-  const handleCalendarToggle = () => setIsCalendarVisible(!isCalendarVisible);
+  const handleCalendarToggle = () => setIsCalendarVisible(!isCalendarVisible)
 
   const handleDateSelect = (day: any) => {
     setSelectedDate(day.dateString)
@@ -60,29 +59,30 @@ export default function  CarteleraScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Título */}
       <View style={styles.header}>
-        {/* TouchableOpacity envuelve el título para redirigir al Home */}
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
           <Text style={styles.title}>MOVITIME</Text>
         </TouchableOpacity>
       </View>
 
       {/* Buscador */}
-      <View style={styles.searchContainer}>  
-      <TextInput
-        placeholder="Busca una película"
-        style={styles.searchInput}
-        placeholderTextColor="#AAA"
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-      />
+      <View style={styles.searchContainer}>
+        <TextInput
+          placeholder="Busca una película"
+          style={styles.searchInput}
+          placeholderTextColor="#AAA"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
       </View>
 
-    <Menu />
+      <Menu />
 
       {/* Botón para abrir el calendario */}
+      <br />
       <RNButton title="Cuando quieres ver tu película?" onPress={handleCalendarToggle} />
-
+      <br />
       {/* Calendario Modal */}
       <Modal visible={isCalendarVisible} transparent={true} animationType="slide">
         <View style={styles.modalOverlay}>
@@ -127,12 +127,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#121212',
     paddingTop: 50,
+    paddingBottom: 20,
   },
   title: {
     fontSize: 24,
     color: '#FFF',
     fontWeight: 'bold',
     marginBottom: 20,
+  },
+  header: {
+    alignItems: 'flex-start',
+    paddingHorizontal: 20,
   },
   tabsContainer: {
     flexDirection: 'row',
@@ -158,10 +163,6 @@ const styles = StyleSheet.create({
     width: 150,
     height: 225,
     borderRadius: 12,
-  },
-  header: {
-    alignItems: 'flex-start',
-    paddingHorizontal: 20,
   },
   movieRating: {
     color: '#FFF',

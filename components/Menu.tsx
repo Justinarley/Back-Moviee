@@ -1,10 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-// Tipos del stack de navegación
 type AuthStackParamList = {
   Profile: undefined;
   Home: undefined;
@@ -56,20 +55,20 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     marginHorizontal: 20,
-    flexDirection: 'row', // Cambiado a 'row' para disposición horizontal
-    justifyContent: 'space-between', // Para distribuir de manera equitativa
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   menuItem: {
-    flexDirection: 'row', // Disposición horizontal para el ícono y el texto
-    alignItems: 'center', // Centra los elementos verticalmente
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   menuItemText: {
     color: '#FFF',
     fontSize: 18,
-    marginLeft: 10, // Espacio entre el ícono y el texto
+    marginLeft: 10,
   },
   icon: {
-    paddingRight: 5, // Un pequeño espacio entre el ícono y el texto
+    paddingRight: 5,
   },
 });
 

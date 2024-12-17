@@ -1,8 +1,8 @@
+import axios from 'axios'
 import { useState } from 'react'
-import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import axios from 'axios'
+import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native'
 
 type AuthStackParamList = {
     Login: undefined

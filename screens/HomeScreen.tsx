@@ -1,4 +1,6 @@
-import { useRef, useEffect } from 'react'
+import axios from 'axios'
+import Menu from '../components/Menu'
+import { useRef, useEffect, useState } from 'react'
 import {
   View,
   Text,
@@ -12,8 +14,7 @@ import {
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import Menu from '../components/Menu';
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // Tipos del stack de navegación
 type AuthStackParamList = {
@@ -21,12 +22,13 @@ type AuthStackParamList = {
   Register: undefined
   Home: undefined
   Cartelera: undefined
-};
+}
 
 type HomeScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Home'>
 
 export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>()
+  const [userName, setUserName] = useState<string>('')
 
   const carouselData = [
     require('../assets/WyD.jpg'),
@@ -52,6 +54,21 @@ export default function HomeScreen() {
   const currentIndex = useRef(0)
 
   useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = await AsyncStorage.getItem('authToken')
+        if (token) {
+          const response = await axios.get('http://localhost:8080/api-users/profile', {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          setUserName(response.data.nombre)
+        }
+      } catch (error) {
+        console.error('Error fetching user data', error)
+      }
+    }
+    fetchUserData()
+
     const interval = setInterval(() => {
       // Avanzar al siguiente índice de forma circular
       currentIndex.current = (currentIndex.current + 1) % carouselData.length
@@ -74,7 +91,7 @@ export default function HomeScreen() {
       {/* Bienvenida y botón en fila */}
       <View style={styles.welcomeRow}>
         <Text style={styles.welcomeText}>
-          Bienvenido, <Text style={styles.boldText}>Usuario</Text>
+          Bienvenido, <Text style={styles.boldText}>{userName || 'Usuario'}</Text>
         </Text>
         <TouchableOpacity
           style={styles.carteleraButton}
@@ -107,8 +124,7 @@ export default function HomeScreen() {
           <Image source={item} style={styles.carouselImage} />
         )}
         contentContainerStyle={styles.carouselContainer}
-        // Ajusta la vista para que solo se vea una imagen a la vez
-        snapToInterval={400} // El ancho de cada imagen
+        snapToInterval={400}
         decelerationRate="fast"
         snapToAlignment="center"
       />

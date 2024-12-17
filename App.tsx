@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
+import AuthNavigator from './navigation/AuthNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import AuthNavigator from './navigation/AuthNavigator';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);

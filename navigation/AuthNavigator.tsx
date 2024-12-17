@@ -1,11 +1,10 @@
-// navigation/AuthNavigator.tsx
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from '../screens/LoginScreen';
-import RegisterScreen from '../screens/RegisterScreen';
 import HomeScreen from '../screens/HomeScreen';
-import CarteleraScreen from '../screens/CarteleraScreen';
+import LoginScreen from '../screens/LoginScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import RegisterScreen from '../screens/RegisterScreen';
+import CarteleraScreen from '../screens/CarteleraScreen';
+import { createStackNavigator } from '@react-navigation/stack';
 
 type AuthStackParamList = {
   Login: undefined;
