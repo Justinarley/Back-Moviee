@@ -18,8 +18,7 @@ type LoginScreenProps = {
 type LoginScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Login'>;
 
 export default function LoginScreen({ setIsAuthenticated }: LoginScreenProps) {
-  const navigation = useNavigation<LoginScreenNavigationProp>();
-  console.log('LoginScreen renderizado'); 
+  const navigation = useNavigation<LoginScreenNavigationProp>(); 
   const [correo, setCorreo] = useState('');
   const [password, setPassword] = useState('');
 
@@ -33,7 +32,6 @@ export default function LoginScreen({ setIsAuthenticated }: LoginScreenProps) {
       if (response.status === 200) {
         const { token } = response.data;
         await AsyncStorage.setItem('authToken', token);
-        console.log('Token almacenado:', token);
         setIsAuthenticated(true);
         navigation.navigate('Home');
       }
