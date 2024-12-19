@@ -9,6 +9,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'reac
 type AuthStackParamList = {
   Profile: undefined;
   Login: undefined;
+  Home: undefined;
 };
 
 type ProfileScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Profile'>;
@@ -47,7 +48,7 @@ export default function ProfileScreen() {
         await axios.put('https://movitime.byronrm.com/api-users/profile', userData, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setIsEditing(false); 
+        setIsEditing(false);
         Alert.alert('Éxito', 'Datos actualizados correctamente');
       }
     } catch (error) {
@@ -64,12 +65,12 @@ export default function ProfileScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>MOVITIME</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <Text style={styles.title}>MOVITIME</Text>
+        </TouchableOpacity>
       </View>
-      <br />
       <Menu />
-      <br />
-      <br />
+      <View style={styles.spacing} />
       <Text style={styles.title}>Mi Perfil</Text>
       <View style={styles.form}>
         <TextInput
@@ -131,7 +132,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#121212',
-    padding: 20,
+    paddingTop: 50,
+    paddingBottom: 20,
     justifyContent: 'flex-start',
   },
   header: {
@@ -194,4 +196,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
+  spacing: {
+    height: 20,  // Puedes ajustar este valor según el espacio que quieras
+  }
 });

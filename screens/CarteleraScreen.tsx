@@ -80,9 +80,9 @@ export default function CarteleraScreen() {
       <Menu />
 
       {/* Botón para abrir el calendario */}
-      <br />
+
       <RNButton title="Cuando quieres ver tu película?" onPress={handleCalendarToggle} />
-      <br />
+
       {/* Calendario Modal */}
       <Modal visible={isCalendarVisible} transparent={true} animationType="slide">
         <View style={styles.modalOverlay}>

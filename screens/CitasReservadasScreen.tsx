@@ -27,9 +27,9 @@ interface CitaPeliculasCine {
 
 export default function CitasReservadasScreen() {
     const navigation = useNavigation<ReservaScreenNavigationProp>();
-    const [citas, setCitas] = useState<CitaPeliculasCine[]>([]);  // Especificamos el tipo de datos para las citas
+    const [citas, setCitas] = useState<CitaPeliculasCine[]>([]);
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedCita, setSelectedCita] = useState<CitaPeliculasCine | null>(null);  // Usamos CitaPeliculasCine o null para selectedCita
+    const [selectedCita, setSelectedCita] = useState<CitaPeliculasCine | null>(null);
 
     useEffect(() => {
         const fetchCitas = async () => {
@@ -44,17 +44,26 @@ export default function CitasReservadasScreen() {
         fetchCitas();
     }, []);
 
-    const handleCitaPress = (cita: CitaPeliculasCine) => {  // Cambié el tipo a CitaPeliculasCine
+    const handleCitaPress = (cita: CitaPeliculasCine) => {
         setSelectedCita(cita);
         setModalVisible(true);
     };
 
     return (
         <View style={styles.container}>
+
+            <View style={styles.header}>
+                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                    <Text style={styles.title}>MOVITIME</Text>
+                </TouchableOpacity>
+            </View>
+
             <Text style={styles.title}>Citas Reservadas</Text>
-            <br />
             <Menu />
-            <br />
+
+            {/* Espacio entre el Menu y la lista */}
+            <View style={styles.spacing} />
+
             <FlatList
                 data={citas}
                 keyExtractor={(item) => item.id.toString()}
@@ -99,7 +108,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#121212',
         paddingTop: 50,
-        paddingHorizontal: 20,
+        paddingBottom: 20,
     },
     title: {
         fontSize: 24,
@@ -109,6 +118,10 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         paddingBottom: 20,
+    },
+    header: {
+        alignItems: 'flex-start',
+        paddingHorizontal: 20,
     },
     citaItem: {
         backgroundColor: '#333',
@@ -155,4 +168,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
+    spacing: {
+        height: 20,  // Puedes ajustar este valor según el espacio que quieras
+    }
 });
