@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#121212',
     padding: 20,
     justifyContent: 'center',
-    alignItems: 'center', // Centra todo el contenido en la pantalla
+    alignItems: 'center',
   },
   title: {
     color: '#FFF',
@@ -158,23 +158,23 @@ const styles = StyleSheet.create({
   },
   inputGroup: {
     marginBottom: 15,
-    width: '90%', // Ancho total del grupo
+    width: '90%',
   },
   label: {
     color: '#FFF',
     marginBottom: 5,
     fontSize: 16,
     fontWeight: 'bold',
-    textAlign: 'left', // Alinea el subtítulo a la izquierda
-    marginLeft: '25%', // Da margen izquierdo para que quede alineado al input
+    textAlign: 'left',
+    marginLeft: '25%',
   },
   input: {
     backgroundColor: '#333',
     borderRadius: 8,
     padding: 10,
     color: '#FFF',
-    width: '50%', // Inputs más cortos
-    alignSelf: 'center', // Centra los inputs dentro del grupo
+    width: '50%',
+    alignSelf: 'center',
   },
   button: {
     backgroundColor: '#5A5A5A',
@@ -184,11 +184,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
     width: '30%',
-    alignSelf: 'center', // Centra el botón
+    alignSelf: 'center',
   },
   buttonText: {
     color: '#FFF',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   modalContainer: {
